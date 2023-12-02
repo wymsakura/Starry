@@ -50,8 +50,7 @@ bitflags::bitflags! {
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum VfsNodeType {
     /// FIFO (named pipe)
-    Fifo = 0o1,
-    /// Character device
+    Fifo = 0o1, 
     CharDevice = 0o2,
     /// Directory
     Dir = 0o4,

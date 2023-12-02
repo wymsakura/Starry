@@ -1,7 +1,7 @@
 extern crate alloc;
 use alloc::string::ToString;
 use alloc::vec::Vec;
-use axfs::api::{lookup, path_exists, FileIO, Kstat, OpenFlags};
+use axfs::api::{lookup, path_exists, FileIO, Kstat, OpenFlags, Metadata};
 use axlog::{debug, info};
 use axprocess::link::FilePath;
 use axsync::Mutex;
@@ -97,6 +97,7 @@ pub fn check_mounted(path: &FilePath) -> bool {
     false
 }
 
+use axfs::api::metadata;
 /// 根据给定的路径获取对应的文件stat
 pub fn get_stat_in_fs(path: &FilePath) -> Result<Kstat, SyscallError> {
     // 根目录算作一个简单的目录文件，不使用特殊的stat
@@ -151,7 +152,8 @@ pub fn get_stat_in_fs(path: &FilePath) -> Result<Kstat, SyscallError> {
             }
         }
     }
-    if !real_path.ends_with("/") && !real_path.ends_with("include") {
+    let real_data = metadata(real_path)?;
+    if  real_data.is_file() && !real_path.ends_with("include") {
         // 是文件
         return if let Ok(file) = new_fd(real_path.to_string(), 0.into()) {
             match file.get_stat() {
@@ -162,7 +164,7 @@ pub fn get_stat_in_fs(path: &FilePath) -> Result<Kstat, SyscallError> {
                 }
             }
         } else {
-            Err(SyscallError::ENONET)
+            Err(SyscallError::ENOENT)
         };
     } else {
         // 是目录

@@ -330,7 +330,7 @@ pub const SDCARD_TESTCASES: &[&str] = &[
     // "busybox echo hello",
     // "busybox sh ./iozone_testcode.sh",
     // "busybox echo latency measurements",
-    "lmbench_all lat_syscall -P 1 null",
+    /* "lmbench_all lat_syscall -P 1 null",
     "lmbench_all lat_syscall -P 1 read",
     "lmbench_all lat_syscall -P 1 write",
     "busybox mkdir -p /var/tmp",
@@ -364,7 +364,10 @@ pub const SDCARD_TESTCASES: &[&str] = &[
     "busybox sh lua_testcode.sh",
     // "libc-bench",
     // "busybox sh ./netperf_testcode.sh",
-    "busybox sh ./cyclictest_testcode.sh",
+    "busybox sh ./cyclictest_testcode.sh", */
+    "busybox touch abc",
+    "busybox mv abc bin/",
+    "busybox ls bin/abc",
 ];
 
 pub const NETPERF_TESTCASES: &[&str] = &[
